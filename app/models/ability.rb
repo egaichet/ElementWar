@@ -1,8 +1,8 @@
 class Ability
-  def initialize(name, damage, debuff = nil)
+  def initialize(name, damage, bonus = nil)
     @name = name
     @damage = damage
-    @debuff = debuff
+    @bonus = bonus
   end
 
   def damage_sample
@@ -10,6 +10,10 @@ class Ability
   end
 
   def daze?
-    @debuff && @debuff == :daze
+    @bonus == :daze
+  end
+
+  def critical?
+    @bonus == :critical && rand >= 0.5
   end
 end

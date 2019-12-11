@@ -6,7 +6,9 @@ class Character
   end
 
   def attack!(foe, ability)
-    foe.attributes.hit_points -= ability.damage_sample
+    damage = ability.damage_sample
+    damage *= 2 if ability.critical?
+    foe.attributes.hit_points -= damage
     foe.attributes.speed /= 2 if ability.daze?
   end
 

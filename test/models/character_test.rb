@@ -43,6 +43,28 @@ class CharacterTest < MiniTest::Test
     assert_equal 30, foe.attributes.speed
   end
 
+  def test_critical_has_fifty_percent_chance_to_double_damage
+    foe = basic_character
+    critical = critical_ability
+
+    critical.stub :rand, 0.5 do
+      @character.attack!(foe, critical)
+    end
+
+    assert_equal 80, foe.attributes.hit_points
+  end
+
+  def test_critical_has_fifty_percent_chance_to_deal_norma_damage
+    foe = basic_character
+    critical = critical_ability
+
+    critical.stub :rand, 0.49 do
+      @character.attack!(foe, critical)
+    end
+
+    assert_equal 90, foe.attributes.hit_points
+  end
+
   private
 
   def punch_ability
@@ -51,6 +73,10 @@ class CharacterTest < MiniTest::Test
 
   def daze_ability
     Ability.new('Daze', 0..0, :daze)
+  end
+
+  def critical_ability
+    Ability.new('Critical', 10..10, :critical)
   end
 
   def basic_character
