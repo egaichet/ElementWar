@@ -1,11 +1,19 @@
 class Character
-  attr_accessor :hit_points
+  attr_reader :attributes
 
-  def initialize(hit_points)
-    @hit_points = hit_points
+  def initialize(attributes)
+    @attributes = attributes
   end
 
-  def attack(foe, ability)
-    foe.hit_points -= ability.damage_sample
+  def attack!(foe, ability)
+    foe.attributes.hit_points -= ability.damage_sample
+  end
+
+  def dead?
+    @attributes.hit_points < 0
+  end
+
+  def faster?(foe)
+    @attributes.speed > foe.attributes.speed
   end
 end
