@@ -7,6 +7,7 @@ class Character
 
   def attack!(foe, ability)
     foe.attributes.hit_points -= ability.damage_sample
+    foe.attributes.speed /= 2 if ability.daze?
   end
 
   def dead?
