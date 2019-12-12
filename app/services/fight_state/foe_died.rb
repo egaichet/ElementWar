@@ -6,7 +6,7 @@ class FightState
 
     def apply!
       console.write('You killed a minion !')
-      @game_handler.storm_elemental_speaks_any('Your real fight await !', 'It was just a test...')
+      @game_handler.storm_elemental_speaks_any('Your real fight awaits !', 'It was just a test...')
       @game_handler.go_to_center!
     end
   end

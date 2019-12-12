@@ -5,7 +5,7 @@ class FightState
     end
 
     def apply!
-      console.write("Turn #{@fight.turn} finished")
+      console.write("Turn #{@fight.turn} finished.")
       @fight.new_turn!
       @game_handler.fight_in!(castle.current_room)
     end
