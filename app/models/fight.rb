@@ -23,11 +23,7 @@ class Fight
 
   def fighter
     if @played.empty?
-      if @hero.faster?(@foe)
-        @hero
-      else
-        @foe
-      end
+      faster_between_characters
     else
       ([@hero, @foe] - @played).first
     end
@@ -38,5 +34,15 @@ class Fight
     target = ([@hero, @foe] - [fighter]).first
     fighter.attack!(target, action.to_sym)
     @played << fighter
+  end
+
+  private
+
+  def faster_between_characters
+    if @hero.faster?(@foe)
+      @hero
+    else
+      @foe
+    end
   end
 end
