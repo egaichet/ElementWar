@@ -16,7 +16,7 @@ class Character
   end
 
   def dead?
-    @attributes.hit_points < 0
+    @attributes.hit_points <= 0
   end
 
   def faster?(foe)

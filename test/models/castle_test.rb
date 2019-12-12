@@ -13,13 +13,6 @@ class CastleTest < MiniTest::Test
     assert_equal ['middle', 'right'], castle.available_rooms
   end
 
-  def test_can_give_foe_at_position
-    expected = foe
-    castle = Castle.new([expected, foe, foe])
-
-    assert_equal expected, castle.foe_at('left')
-  end
-
   def test_hero_is_at_center_at_beginning
     castle = Castle.new([])
 
@@ -32,6 +25,15 @@ class CastleTest < MiniTest::Test
     castle.hero_move_to!('left')
 
     assert_equal 'left', castle.current_room
+  end
+
+  def test_can_give_foe_at_position
+    expected = foe
+    castle = Castle.new([expected, foe, foe])
+
+    castle.hero_move_to!('left')
+
+    assert_equal expected, castle.current_foe
   end
 
   private

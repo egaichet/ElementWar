@@ -14,8 +14,8 @@ class Castle
     @rooms.select{ |_, foe| !foe.dead? }.keys
   end
 
-  def foe_at(position)
-    @rooms[position]
+  def current_foe
+    @rooms[@current_room]
   end
 
   def hero_move_to!(position)
