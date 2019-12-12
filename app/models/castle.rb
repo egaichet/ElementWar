@@ -11,7 +11,7 @@ class Castle
   end
 
   def available_rooms
-    @rooms.select{ |_, foe| !foe.dead? }.keys
+    @rooms.select{ |_, foe| foe && !foe.dead? }.keys
   end
 
   def current_foe

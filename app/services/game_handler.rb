@@ -1,12 +1,22 @@
 class GameHandler
-  attr_reader :hero, :boss, :castle, :fight
+  attr_reader :hero, :boss, :castle, :fight, :console
 
-  def initialize(console = nil)
-    @hero = CharacterBuilder.hero
-    @boss = CharacterBuilder.boss
-    @castle = CastleBuilder.foes_in_random_room([CharacterBuilder.minion, CharacterBuilder.minion, @boss])
+  def self.random_minions_and_boss_anywhere(console = nil)
+    boss = CharacterBuilder.boss
+    new(
+      CharacterBuilder.hero,
+      boss,
+      CastleBuilder.foes_in_random_room([CharacterBuilder.random_minion, CharacterBuilder.random_minion, boss]),
+      console || ConsoleService.new
+    )
+  end
+
+  def initialize(hero, boss, castle, console)
+    @hero = hero
+    @boss = boss
+    @castle = castle
     @fight = nil
-    @console = console || ConsoleService.new
+    @console = console
   end
 
   def start!
@@ -28,36 +38,18 @@ class GameHandler
     )
   end
 
-  def died!
-    @console.write('You died...')
-    storm_elemental_speaks_any(
-      'lol',
-      'I trusted you...',
-      'I am gonna call Mikahell',
-      'You were so close !'
-    )
-  end
-
-  def won!
-    @console.write('You won !')
-    storm_elemental_speaks_any(
-      'I always knew you could do it',
-      'You were close to die ! Just kidding, congratulation',
-      'The elemental lords thank you...'
-    )
-  end
-
   def go_to_center!
     @fight = nil
     @castle.hero_move_to!('center')
     @console.write("Choose a room (#{@castle.available_rooms.join('/')})")
     room = give_means_to_user(@castle.available_rooms)
-    @castle.hero_move_to!(room)
     fight_in!(room)
   end
 
   def fight_in!(room)
+    @castle.hero_move_to!(room)
     @fight ||= Fight.new(@hero, @castle.current_foe)
+    FightState.check_and_apply!(@fight, self)
   end
 
   def storm_elemental_speaks(*sentences)
