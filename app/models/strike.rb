@@ -1,6 +1,5 @@
-class Ability
-  def initialize(name, damage, bonus = nil)
-    @name = name
+class Strike
+  def initialize(damage, bonus = nil)
     @damage = damage
     @bonus = bonus
   end

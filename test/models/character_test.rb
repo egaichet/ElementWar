@@ -85,28 +85,12 @@ class CharacterTest < MiniTest::Test
     CharacterBuilder.build(
       attributes: { hit_points: 100, speed: 50 },
       strikes: {
-        punch: punch_ability,
-        daze: daze_ability,
-        critical: critical_ability,
-        quickstrike: quickstrike_ability
+        punch: Strike.new(8..12),
+        daze: Strike.new(0..0, :daze),
+        critical: Strike.new(10..10, :critical),
+        quickstrike: Strike.new(10..10, :quickstrike)
       }
     )
-  end
-
-  def punch_ability
-    Ability.new('Punch', 8..12)
-  end
-
-  def daze_ability
-    Ability.new('Daze', 0..0, :daze)
-  end
-
-  def critical_ability
-    Ability.new('Critical', 10..10, :critical)
-  end
-
-  def quickstrike_ability
-    Ability.new('Quickstrike', 10..10, :quickstrike)
   end
 
   def dying_character

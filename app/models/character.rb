@@ -22,4 +22,8 @@ class Character
   def faster?(foe)
     @attributes.speed > foe.attributes.speed
   end
+
+  def ==(character)
+    character.is_a?(self.class) && character.object_id == object_id
+  end
 end
