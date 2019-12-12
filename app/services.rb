@@ -1,3 +1,5 @@
 require_relative 'services/character_builder'
 require_relative 'services/strike_builder'
 require_relative 'services/castle_builder'
+require_relative 'services/console_service'
+require_relative 'services/game_handler'
