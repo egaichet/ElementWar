@@ -7,6 +7,7 @@ class Character
 
   def attack!(foe, ability)
     damage = ability.damage_sample
+    damage += ability.damage_sample if ability.quickstrike? && faster?(foe)
     damage *= 2 if ability.critical?
     foe.attributes.hit_points -= damage
     foe.attributes.speed /= 2 if ability.daze?

@@ -16,4 +16,8 @@ class Ability
   def critical?
     @bonus == :critical && rand >= 0.5
   end
+
+  def quickstrike?
+    @bonus == :quickstrike
+  end
 end

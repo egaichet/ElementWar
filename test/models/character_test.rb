@@ -54,13 +54,29 @@ class CharacterTest < MiniTest::Test
     assert_equal 80, foe.attributes.hit_points
   end
 
-  def test_critical_has_fifty_percent_chance_to_deal_norma_damage
+  def test_critical_has_fifty_percent_chance_to_deal_normal_damage
     foe = basic_character
     critical = critical_ability
 
     critical.stub :rand, 0.49 do
       @character.attack!(foe, critical)
     end
+
+    assert_equal 90, foe.attributes.hit_points
+  end
+
+  def test_faster_character_quickstrike_hit_one_more_time
+    foe = slower_character
+
+    @character.attack!(foe, quickstrike_ability)
+
+    assert_equal 80, foe.attributes.hit_points
+  end
+
+  def test_slower_character_quickstrike_hit_normally
+    foe = faster_character
+
+    @character.attack!(foe, quickstrike_ability)
 
     assert_equal 90, foe.attributes.hit_points
   end
@@ -77,6 +93,10 @@ class CharacterTest < MiniTest::Test
 
   def critical_ability
     Ability.new('Critical', 10..10, :critical)
+  end
+
+  def quickstrike_ability
+    Ability.new('Quickstrike', 10..10, :quickstrike)
   end
 
   def basic_character
