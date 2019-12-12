@@ -29,12 +29,6 @@ class FightTest < MiniTest::Test
     assert @foe.attributes.speed < 50
   end
 
-  def test_cannot_use_unknow_ability
-    fight = Fight.new(@hero, @foe)
-
-    assert_raises{ fight.play!(@hero, 'lava_storm') }
-  end
-
   def test_foe_play_after_hero
     fight = Fight.new(@hero, @foe)
 

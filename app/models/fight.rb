@@ -30,7 +30,6 @@ class Fight
   end
 
   def play!(fighter, action)
-    raise "Cannot execute #{action}" unless fighter.strikes.keys.map(&:to_s).include?(action)
     target = ([@hero, @foe] - [fighter]).first
     fighter.attack!(target, action.to_sym)
     @played << fighter
