@@ -8,7 +8,7 @@ class CharacterTest < MiniTest::Test
   def test_can_attack_another_with_ability
     foe = basic_character
 
-    @character.attack!(foe, punch_ability)
+    @character.attack!(foe, :punch)
 
     assert foe.attributes.hit_points < 100
     assert foe.attributes.hit_points >= 88
@@ -17,7 +17,7 @@ class CharacterTest < MiniTest::Test
   def test_can_kill_a_foe
     foe = dying_character
 
-    @character.attack!(foe, punch_ability)
+    @character.attack!(foe, :punch)
 
     assert foe.attributes.hit_points < 0
     assert foe.dead?
@@ -30,7 +30,7 @@ class CharacterTest < MiniTest::Test
   def test_character_can_daze_foe
     foe = faster_character
 
-    @character.attack!(foe, daze_ability)
+    @character.attack!(foe, :daze)
 
     assert @character.faster?(foe)
   end
@@ -38,17 +38,16 @@ class CharacterTest < MiniTest::Test
   def test_daze_halves_foe_speed
     foe = faster_character
 
-    @character.attack!(foe, daze_ability)
+    @character.attack!(foe, :daze)
 
     assert_equal 30, foe.attributes.speed
   end
 
   def test_critical_has_fifty_percent_chance_to_double_damage
     foe = basic_character
-    critical = critical_ability
 
-    critical.stub :rand, 0.5 do
-      @character.attack!(foe, critical)
+    @character.strikes[:critical].stub :rand, 0.5 do
+      @character.attack!(foe, :critical)
     end
 
     assert_equal 80, foe.attributes.hit_points
@@ -56,10 +55,9 @@ class CharacterTest < MiniTest::Test
 
   def test_critical_has_fifty_percent_chance_to_deal_normal_damage
     foe = basic_character
-    critical = critical_ability
 
-    critical.stub :rand, 0.49 do
-      @character.attack!(foe, critical)
+    @character.strikes[:critical].stub :rand, 0.49 do
+      @character.attack!(foe, :critical)
     end
 
     assert_equal 90, foe.attributes.hit_points
@@ -68,7 +66,7 @@ class CharacterTest < MiniTest::Test
   def test_faster_character_quickstrike_hit_one_more_time
     foe = slower_character
 
-    @character.attack!(foe, quickstrike_ability)
+    @character.attack!(foe, :quickstrike)
 
     assert_equal 80, foe.attributes.hit_points
   end
@@ -76,12 +74,24 @@ class CharacterTest < MiniTest::Test
   def test_slower_character_quickstrike_hit_normally
     foe = faster_character
 
-    @character.attack!(foe, quickstrike_ability)
+    @character.attack!(foe, :quickstrike)
 
     assert_equal 90, foe.attributes.hit_points
   end
 
   private
+
+  def basic_character
+    CharacterBuilder.build(
+      attributes: { hit_points: 100, speed: 50 },
+      strikes: {
+        punch: punch_ability,
+        daze: daze_ability,
+        critical: critical_ability,
+        quickstrike: quickstrike_ability
+      }
+    )
+  end
 
   def punch_ability
     Ability.new('Punch', 8..12)
@@ -97,10 +107,6 @@ class CharacterTest < MiniTest::Test
 
   def quickstrike_ability
     Ability.new('Quickstrike', 10..10, :quickstrike)
-  end
-
-  def basic_character
-    CharacterBuilder.build(attributes: { hit_points: 100, speed: 50})
   end
 
   def dying_character
