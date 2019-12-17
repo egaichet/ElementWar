@@ -6,6 +6,14 @@ class Character
     @strikes = strikes
   end
 
+  def strike_names
+    strikes.keys.map(&:to_s)
+  end
+
+  def random_strike_name
+    strike_names.sample
+  end
+
   def attack!(foe, strike_name)
     strike = @strikes[strike_name]
     damage = strike.damage_sample

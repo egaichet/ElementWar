@@ -6,7 +6,7 @@ class FightState
 
     def apply!
       console.write("Your oponent turn !")
-      strike_name = foe.strikes.keys.map(&:to_s).sample
+      strike_name = foe.random_strike_name
       @fight.play!(foe, strike_name)
       console.write("Your foe strike with #{strike_name}! (you have #{hero.attributes.hit_points} left).")
       @game_handler.storm_elemental_speaks_any('Aouch !', 'You should have avoided it.', 'Mickahell would have dodged easily...', 'Are you ok ?')
